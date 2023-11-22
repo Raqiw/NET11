@@ -1,5 +1,10 @@
 ﻿@model PaginatorViewModel<GamerShop.Models.Movies.ShowShortMovieCollectionViewModel>
 
+<div>
+    @Html.HiddenFor(x=>x.Page)
+    @Html.HiddenFor(x=>x.PerPage)
+</div>
+
 @foreach (var collection in Model.Items)
 {
     <div class="collection-item" onclick="window.location.href='@Url.Action("Show", "MovieCollection", new { id = collection.Id })';">
@@ -20,7 +25,7 @@
             }
             else
             {
-                <a href="@Url.Action("ShowAll", "MovieCollection", new { page = pageNumber, perPage = Model.PerPage })" class="page-link">@pageNumber</a>
+                <a href="@Url.Action("ShowAll", "MovieCollection", new { page = pageNumber, perPage = Model.PerPage })" class="page-link" data-page="@pageNumber">@pageNumber</a>
             }
         }
     </div>
