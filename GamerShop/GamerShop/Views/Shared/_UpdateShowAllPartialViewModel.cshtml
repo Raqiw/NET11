@@ -17,6 +17,12 @@
 
 <div class="pagination-wrapper">
     <div class="pagination">
+        
+        @if (Model.Page > 1)
+        {
+            <a href="@Url.Action("ShowAll", "MovieCollection", new { page = Model.Page - 1, perPage = Model.PerPage })" class="page-link" data-page="@(Model.Page - 1)">Назад</a>
+        }
+
         @foreach (var pageNumber in Model.AvailablePages)
         {
             if (pageNumber == Model.Page)
@@ -27,6 +33,11 @@
             {
                 <a href="@Url.Action("ShowAll", "MovieCollection", new { page = pageNumber, perPage = Model.PerPage })" class="page-link" data-page="@pageNumber">@pageNumber</a>
             }
+        }
+        
+        @if (Model.Page < Model.AvailablePages.Count)
+        {
+            <a href="@Url.Action("ShowAll", "MovieCollection", new { page = Model.Page + 1, perPage = Model.PerPage })" class="page-link" data-page="@(Model.Page + 1)">Вперед</a>
         }
     </div>
 </div>
