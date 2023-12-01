@@ -3,6 +3,16 @@
 <div class="containerPage">
     <div class="section">
         <h1 class="section-title">@Model.Title</h1>
+        
+        @if (!string.IsNullOrEmpty(Model.ImagePath))
+        {
+            <img src="@Url.Content(Model.ImagePath)" alt="Collection Image"  width="320" height="320"/>
+        }
+        else
+        {
+            <img src="@Url.Content("/img/MovieCollection/film-reel.png")" alt="Collection Image" width="240" height="240" />
+        }
+
         <div class="section-subtitle">
             <i>Создана: @Model.DateCreated.ToShortDateString()</i><br>
             <i>Автор: @Model.AuthorName</i>
@@ -15,7 +25,7 @@
             <b class="rating @(Model.Rating > 7 ? "good" : "bad")">@Model.Rating</b>
         </p>
     </div>
-
+    
     <div class="section">
         <h2 class="section-title">Описание:</h2>
         <p class="description">
