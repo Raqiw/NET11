@@ -10,5 +10,6 @@ public class ShowMovieCollectionViewModel
     public DateTime DateCreated { get; set; }
     public string AuthorName { get; set; }
     public double Rating { get; set; }
+    public string ImagePath { get; set; }
     public ICollection<ShortMovieBlm> Movies { get; set; }
 }

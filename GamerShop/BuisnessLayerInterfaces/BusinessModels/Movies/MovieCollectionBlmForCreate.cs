@@ -6,5 +6,6 @@ public class MovieCollectionBlmForCreate
     public string? Description { get; set; }
     public bool IsPublic { get; set; }
     public UserBlm Author { get; set; }
+    public string ImagePath { get; set; }
     public ICollection<int> MoviesIds { get; set; }
 }

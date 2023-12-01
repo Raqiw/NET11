@@ -49,7 +49,8 @@ public class MovieCollectionService : IMovieCollectionService
                 .Ratings
                 .Select(r => r.Value)
                 .DefaultIfEmpty(0)
-                .Average()
+                .Average(),
+            ImagePath = movieCollection.ImagePath
         };
         return movieCollectionBlmForShow;
     }
@@ -68,7 +69,8 @@ public class MovieCollectionService : IMovieCollectionService
                 .MoviesIds
                 .Select(m => _movieRepository.Get(m))
                 .ToList(),
-            Ratings = new List<Rating>()
+            Ratings = new List<Rating>(),
+            ImagePath = movieCollectionBlmForCreate.ImagePath,
         };
         _movieCollectionRepository.Save(movieCollectionToAdd);
     }

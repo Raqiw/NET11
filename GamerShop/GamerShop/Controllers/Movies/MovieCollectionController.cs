@@ -39,7 +39,8 @@ public class MovieCollectionController : Controller
             DateCreated = collectionBlm.DateCreated,
             AuthorName = collectionBlm.AuthorName,
             Movies = collectionBlm.Movies,
-            Rating = collectionBlm.Rating
+            Rating = collectionBlm.Rating,
+            ImagePath = collectionBlm.ImagePath
         };
 
         return View(collectionViewModel);
@@ -62,7 +63,7 @@ public class MovieCollectionController : Controller
     }
 
     [HttpGet]
-    public IActionResult UpdateShowAll(int page = 1, int perPage = 5, string sortingCriteria = "Newest", bool isAscending = true)
+    public IActionResult UpdateShowAll(int page = 1, int perPage = 3, string sortingCriteria = "Newest", bool isAscending = true)
     {
         var filter = (Expression<Func<Collection, bool>>)(x => x.IsPublic == true);
         var paginatorViewModel = _paginatorService.GetPaginatorViewModelWithFilter(
@@ -110,9 +111,19 @@ public class MovieCollectionController : Controller
 
     [HttpPost]
     [Authorize]
-    public IActionResult Create(CreateMovieCollectionViewModel createMovieCollectionViewModel)
+    public IActionResult Create(CreateMovieCollectionViewModel createMovieCollectionViewModel, IFormFile imageFile)
     {
         if (!ModelState.IsValid) return View(createMovieCollectionViewModel);
+        string rdyImagePath = null;
+
+        if (imageFile != null && imageFile.Length > 0)
+        {
+            rdyImagePath = SaveImage(imageFile);
+        }
+        else
+        {
+            rdyImagePath = "/img/MovieCollection/film-reel.png";
+        }
 
         var movieCollectionBlmForCreate = new MovieCollectionBlmForCreate
         {
@@ -124,10 +135,24 @@ public class MovieCollectionController : Controller
                 .Where(s => s.Selected)
                 .Select(s => int.Parse(s.Value))
                 .ToList(),
-            Author = _authService.GetCurrentUser()
+            Author = _authService.GetCurrentUser(),
+            ImagePath = rdyImagePath,
         };
 
         _collectionService.CreateMovieCollection(movieCollectionBlmForCreate);
         return RedirectToAction("Show", "MovieMain");
+    }
+    private string SaveImage(IFormFile image)
+    {
+        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+
+        var imagePath = Path.Combine("wwwroot", "img", "MovieCollection", fileName);
+
+        using (var stream = new FileStream(imagePath, FileMode.Create))
+        {
+            image.CopyTo(stream);
+        }
+
+        return $"/img/MovieCollection/{fileName}";
     }
 }
