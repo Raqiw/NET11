@@ -2,8 +2,11 @@
 
 <div class="containerPage">
     <h2 class="form-label">Создание подборки фильмов</h2>
-    @using (Html.BeginForm("Create", "MovieCollection", FormMethod.Post))
+    @using (Html.BeginForm("Create", "MovieCollection", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        <label for="fileadding"><img src="~/img/MovieCollection/film-reel.png" height="320" width="320" style="border: 1px solid black; border-radius:10px ;" /></label>
+        <input type="file" id="fileadding" style="display: none;" name="imageFile" />
+
         <div class="form-group">
             @Html.LabelFor(m => m.Title, "Название подборки:", new {@class="form-label"})
             @Html.TextBoxFor(m=>m.Title, new {@class="form-control"})
